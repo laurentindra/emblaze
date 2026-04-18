@@ -7,10 +7,6 @@ const cors = require('cors');
 
 const app = express();
 
-// --- SETUP FRONTEND EMBLAZE ---
-app.use(express.static(path.join(__dirname, '..', 'frontend', 'public')));
-app.use(express.static(path.join(__dirname, '..', 'frontend', 'views')));
-
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -32,7 +28,6 @@ db.connect((err) => {
     console.log('Database ' + process.env.DB_NAME + ' Successfully connected! ✅');
     
     // --- 3NF TABLE STRUCTURE ---
-    
     const userTable = `
     CREATE TABLE IF NOT EXISTS users (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -53,7 +48,6 @@ db.connect((err) => {
         image_url VARCHAR(255)
     )`;
 
-    // TABLE ORDERS (Induk - 3NF)
     const orderTable = `
     CREATE TABLE IF NOT EXISTS orders (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -63,7 +57,6 @@ db.connect((err) => {
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     )`;
 
-    // TABLE ORDER_ITEMS (Anak - 3NF Detail)
     const orderItemsTable = `
     CREATE TABLE IF NOT EXISTS order_items (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -87,65 +80,61 @@ db.connect((err) => {
     });
 });
 
-// --- ROUTES ---
-app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'frontend', 'views', 'index.html'));
+// --- API ROUTES (BUAT DI TEMBAK DARI FRONTEND) ---
+
+// Health Check (Biar tau server nyala)
+app.get('/api/status', (req, res) => {
+    res.json({ message: "Backend Emblaze is Online! 🟢" });
 });
 
-// Register & Login 
+// Register
 app.post('/api/register', async (req, res) => {
     const { username, password, email } = req.body;
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const query = "INSERT INTO users (username, password, email) VALUES (?, ?, ?)";
         db.query(query, [username, hashedPassword, email], (err) => {
-            if (err) return res.status(500).json({ message: "Cannot sign in/User exists!" });
-            res.status(201).json({ message: "User registered as safe!" });
+            if (err) return res.status(500).json({ message: "Username sudah ada atau error database!" });
+            res.status(201).json({ message: "User registered successfully!" });
         });
     } catch (e) { res.status(500).send("Error hashing"); }
 });
 
+// Login
 app.post('/api/login', (req, res) => {
     const { username, password } = req.body;
     const query = "SELECT * FROM users WHERE username = ?";
     db.query(query, [username], async (err, results) => {
         if (err || results.length === 0) return res.status(404).json({ message: "User not found!" });
         const match = await bcrypt.compare(password, results[0].password);
-        if (match) res.status(200).json({ message: `Login successful! hi ${username}!`, user_id: results[0].id });
-        else res.status(401).json({ message: "your password is wrong." });
+        if (match) res.status(200).json({ message: `Login successful!`, user_id: results[0].id });
+        else res.status(401).json({ message: "Password salah!" });
     });
 });
 
-// --- PRODUCT ROUTES ---
-app.get('/api/products', (req, res) => {
-    db.query("SELECT * FROM products", (err, results) => {
-        res.status(200).json(results);
-    });
-});
-
-// --- ORDER ROUTE
+// Orders (Checkout)
 app.post('/api/orders', (req, res) => {
-    const { user_id, cart_items } = req.body; // cart_items harus berupa array barang
+    const { user_id, cart_items } = req.body;
 
-    // 1. Masukin ke tabel induk (orders)
+    if (!cart_items || cart_items.length === 0) {
+        return res.status(400).json({ message: "Keranjang kosong!" });
+    }
+
     const orderQuery = "INSERT INTO orders (user_id) VALUES (?)";
     db.query(orderQuery, [user_id], (err, result) => {
-        if (err) return res.status(500).json({ message: "Order failed at parent table." });
+        if (err) return res.status(500).json({ message: "Gagal membuat order induk." });
         
         const orderId = result.insertId;
-
-        // 2. Masukin semua barang dari cart ke tabel detail (order_items)
-        // Kita asumsikan cart_items isinya [{product_id: 1, quantity: 2, price: 50000}, ...]
-        const values = cart_items.map(item => [orderId, item.product_id, item.quantity, item.price]);
+        const values = cart_items.map(item => [orderId, item.product_id, item.quantity, item.price_at_purchase]);
         const itemsQuery = "INSERT INTO order_items (order_id, product_id, quantity, price_at_purchase) VALUES ?";
         
         db.query(itemsQuery, [values], (err) => {
-            if (err) return res.status(500).json({ message: "Failed to save order items." });
-            res.status(201).json({ message: "Order placed successfully in 3NF!", orderId });
+            if (err) return res.status(500).json({ message: "Gagal menyimpan item belanjaan." });
+            res.status(201).json({ message: "Order masuk ke database 3NF!", orderId });
         });
     });
 });
 
 app.listen(port, () => {
-    console.log(`🚀 Server EMBLAZE jalan di http://localhost:${port}`);
+    console.log(`Server EMBLAZE Backend jalan di http://localhost:${port}`);
 });

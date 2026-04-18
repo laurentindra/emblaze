@@ -1,0 +1,20 @@
+# Node
+node_modules/
+npm-debug.log
+
+# Environment / secrets
+.env
+database/.env
+
+# Ignore local XAMPP deploy artifacts
+deploy.ps1
+uploads/qris.jpg
+uploads/qris.png
+uploads/products/
+
+# PHP/config
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
