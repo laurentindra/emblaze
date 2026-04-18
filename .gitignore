@@ -8,7 +8,9 @@ database/.env
 
 # Ignore local XAMPP deploy artifacts
 deploy.ps1
-uploads/qris.jpg
+
+# Keep qris.jpg in repo (needed for Railway)
+# uploads/qris.jpg
 uploads/qris.png
 uploads/products/
 
