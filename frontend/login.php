@@ -45,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['action'])) {
                 $_SESSION['is_admin']   = true;
                 $_SESSION['admin_id']   = $user['id'];
                 $_SESSION['admin_name'] = $user['username'];
-                echo json_encode(["success" => true, "redirect" => "frontend/admin/dashboard.php"]);
+                echo json_encode(["success" => true, "redirect" => "admin/dashboard.php"]);
             } else {
                 echo json_encode(["success" => true, "redirect" => "index.php"]);
             }

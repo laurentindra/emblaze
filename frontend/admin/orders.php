@@ -1,6 +1,6 @@
 <?php
 require 'auth.php';
-include '../../koneksi.php';
+include '../koneksi.php';
 
 $success = $_SESSION['flash_success'] ?? '';
 $errMsg  = $_SESSION['flash_error']   ?? '';

@@ -1,6 +1,6 @@
 <?php
 require 'auth.php';
-include '../../koneksi.php';
+include '../koneksi.php';
 
 //p p apa? products blayy , piann sungguh mempesona
 $totalProducts = $pdo->query("SELECT COUNT(*) FROM products")->fetchColumn();

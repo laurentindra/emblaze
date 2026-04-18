@@ -1,6 +1,6 @@
 <?php
 require 'auth.php';
-include '../../koneksi.php';
+include '../koneksi.php';
 
 $action  = $_POST['action'] ?? '';
 $user_id = intval($_POST['user_id'] ?? 0);

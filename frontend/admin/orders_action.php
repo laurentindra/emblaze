@@ -1,6 +1,6 @@
 <?php
 require 'auth.php';
-include '../../koneksi.php';
+include '../koneksi.php';
 
 $order_id = intval($_POST['order_id'] ?? 0);
 $status   = $_POST['status'] ?? '';
