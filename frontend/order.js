@@ -65,6 +65,8 @@ function selectPayment(el, pay) {
 
 
 function placeOrder() {
+  console.log('[Emblaze] placeOrder called, cart:', cart);
+
   if (cart.length === 0) {
     alert('Your cart is empty. Please add items before ordering.');
     return;
@@ -74,8 +76,8 @@ function placeOrder() {
   var shipping_method = shippingEl ? shippingEl.getAttribute('data-method') : 'regular';
   var payment_method = selectedPayment || 'transfer';
 
-  var address = document.querySelector('input[placeholder="Jl. Merdeka No. 12"]');
-  address = address ? address.value : '';
+  var addressEl = document.querySelector('input[placeholder="Jl. Merdeka No. 12"]');
+  var address = addressEl ? addressEl.value : '';
 
   var total = 0;
   cart.forEach(function (item) { total += item.price * item.qty; });
@@ -83,6 +85,8 @@ function placeOrder() {
 
   var btn = document.querySelector('.place-order-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Processing...'; }
+
+  console.log('[Emblaze] Sending order:', { shipping_method: shipping_method, payment_method: payment_method, total: total, items: cart.length });
 
   fetch('order.php', {
     method: 'POST',
@@ -98,19 +102,31 @@ function placeOrder() {
       address: address
     })
   })
-    .then(function (res) { return res.json(); })
-    .then(function (data) {
+    .then(function (res) {
+      console.log('[Emblaze] Response status:', res.status);
+      return res.text(); // read as TEXT first to avoid JSON parse crash
+    })
+    .then(function (text) {
+      console.log('[Emblaze] Raw response:', text.substring(0, 300));
+      var data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        alert('Server error. Check console for details.\n\n' + text.substring(0, 200));
+        if (btn) { btn.disabled = false; btn.textContent = 'Place Order'; }
+        return;
+      }
       if (data.success) {
         localStorage.removeItem('emblaze_cart');
         window.location.href = 'payment.php?order_id=' + encodeURIComponent(data.order_id) + '&method=' + encodeURIComponent(data.method || payment_method);
       } else {
-        alert('Failed: ' + (data.message || 'Unknown error'));
+        alert('Order failed: ' + (data.message || 'Unknown error'));
         if (btn) { btn.disabled = false; btn.textContent = 'Place Order'; }
       }
     })
     .catch(function (err) {
-      console.error(err);
-      alert('Connection error. Please try again.');
+      console.error('[Emblaze] Fetch error:', err);
+      alert('Connection error: ' + err.message + '\nPlease try again.');
       if (btn) { btn.disabled = false; btn.textContent = 'Place Order'; }
     });
 }
