@@ -93,6 +93,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
   <?php foreach ($products as $p): ?>
   <article class="product-card glass"
+    data-id="<?= $p['id'] ?>"
     data-category="<?= htmlspecialchars($p['category']) ?>"
     data-price="<?= $p['price'] ?>"
     data-name="<?= htmlspecialchars($p['name']) ?>">

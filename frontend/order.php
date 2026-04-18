@@ -34,13 +34,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
         }
 
         foreach ($items as $item) {
+            // Sanitize: product_id must be a valid DB int, not a JS timestamp
+            $rawId    = $item['product_id'] ?? null;
+            $productId = ($rawId !== null && $rawId < 2147483647) ? intval($rawId) : null;
+
             $stmt = $pdo->prepare("
                 INSERT INTO orders (user_id, product_id, quantity, total_price, shipping_method, payment_method, status, shipping_address)
                 VALUES (?, ?, ?, ?, ?, ?, 'pending', ?)
             ");
             $stmt->execute([
                 $user_id,
-                $item['product_id'] ?? null,
+                $productId,
                 intval($item['qty'] ?? 1),
                 floatval($item['price'] ?? 0) * intval($item['qty'] ?? 1),
                 $shipping_method,

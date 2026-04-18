@@ -23,14 +23,14 @@ const menuToggle = document.getElementById('menuToggle');
       localStorage.setItem('emblaze_cart', JSON.stringify(cart));
     }
 
-    function addToCart(name, price, category, img, badge) {
+    function addToCart(id, name, price, category, img, badge) {
       const cart = getCart();
-      const existing = cart.find(i => i.name === name);
+      const existing = cart.find(i => i.id === id);
       if (existing) {
         existing.qty++;
       } else {
         cart.push({
-          id: Date.now(),
+          id: id,
           name,
           cat: category,
           price: Number(price),
@@ -46,6 +46,7 @@ const menuToggle = document.getElementById('menuToggle');
       const btn = card.querySelector('.full-btn');
       if (!btn) return;
 
+      const id       = parseInt(card.dataset.id) || null;
       const name     = card.dataset.name;
       const price    = card.dataset.price;
       const category = card.dataset.category;
@@ -54,7 +55,7 @@ const menuToggle = document.getElementById('menuToggle');
       const badge    = badgeEl ? badgeEl.textContent.trim() : '';
 
       btn.addEventListener('click', () => {
-        addToCart(name, price, category, img, badge);
+        addToCart(id, name, price, category, img, badge);
 
         btn.textContent = '✓ Added';
         btn.style.background = 'linear-gradient(135deg,#9f1d2e,#c4455b)';
