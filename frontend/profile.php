@@ -93,12 +93,11 @@ $orderStmt = $pdo->prepare("SELECT COUNT(*) as total FROM orders WHERE user_id =
 $orderStmt->execute([$_SESSION['user_id']]);
 $orderCount = $orderStmt->fetch(PDO::FETCH_ASSOC)['total'];
 
-// Fetch total spent
+// Fetch total spent — new schema: each orders row has total_price
 $spentStmt = $pdo->prepare("
-    SELECT COALESCE(SUM(oi.price_at_purchase * oi.quantity), 0) as total_spent
-    FROM orders o
-    JOIN order_items oi ON o.id = oi.order_id
-    WHERE o.user_id = ?
+    SELECT COALESCE(SUM(total_price), 0) as total_spent
+    FROM orders
+    WHERE user_id = ?
 ");
 $spentStmt->execute([$_SESSION['user_id']]);
 $totalSpent = $spentStmt->fetch(PDO::FETCH_ASSOC)['total_spent'];
@@ -301,14 +300,12 @@ $memberSince = date('F j, Y', strtotime($user['created_at']));
 
           <?php
           $ordersQuery = $pdo->prepare("
-              SELECT o.id, o.order_date, o.status,
-                     COALESCE(SUM(oi.price_at_purchase * oi.quantity), 0) as total,
-                     COUNT(oi.id) as item_count
-              FROM orders o
-              LEFT JOIN order_items oi ON o.id = oi.order_id
-              WHERE o.user_id = ?
-              GROUP BY o.id
-              ORDER BY o.order_date DESC
+              SELECT id, order_date, status,
+                     COALESCE(total_price, 0) as total,
+                     payment_method, shipping_method
+              FROM orders
+              WHERE user_id = ?
+              ORDER BY order_date DESC
           ");
           $ordersQuery->execute([$_SESSION['user_id']]);
           $orders = $ordersQuery->fetchAll(PDO::FETCH_ASSOC);
@@ -326,13 +323,13 @@ $memberSince = date('F j, Y', strtotime($user['created_at']));
                 <div class="order-row">
                   <div class="order-id">
                     <span class="order-label">Order</span>
-                    <span class="order-number">#<?= str_pad($order['id'], 4, '0', STR_PAD_LEFT) ?></span>
+                    <span class="order-number">EMB-<?= str_pad($order['id'], 5, '0', STR_PAD_LEFT) ?></span>
                   </div>
                   <div class="order-date"><?= date('M j, Y', strtotime($order['order_date'])) ?></div>
-                  <div class="order-items"><?= $order['item_count'] ?> item<?= $order['item_count'] > 1 ? 's' : '' ?></div>
+                  <div class="order-items"><?= ucfirst($order['payment_method'] ?? 'transfer') ?></div>
                   <div class="order-total">Rp<?= number_format($order['total'], 0, ',', '.') ?></div>
                   <div class="order-status">
-                    <span class="status-badge status-<?= strtolower($order['status']) ?>"><?= $order['status'] ?></span>
+                    <span class="status-badge status-<?= strtolower($order['status']) ?>"><?= ucfirst($order['status']) ?></span>
                   </div>
                 </div>
               <?php endforeach; ?>
