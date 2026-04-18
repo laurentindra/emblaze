@@ -2,7 +2,9 @@
   "name": "emblaze/fashion-store",
   "description": "Emblaze Fashion Store",
   "require": {
-    "php": ">=8.0"
+    "php": "^8.2",
+    "ext-pdo": "*",
+    "ext-pdo_mysql": "*"
   },
   "config": {
     "optimize-autoloader": true
