@@ -76,8 +76,21 @@ function placeOrder() {
   var shipping_method = shippingEl ? shippingEl.getAttribute('data-method') : 'regular';
   var payment_method = selectedPayment || 'transfer';
 
-  var addressEl = document.querySelector('input[placeholder="Jl. Merdeka No. 12"]');
-  var address = addressEl ? addressEl.value : '';
+  var fname = document.getElementById('first_name') ? document.getElementById('first_name').value.trim() : '';
+  var lname = document.getElementById('last_name') ? document.getElementById('last_name').value.trim() : '';
+  var email = document.getElementById('email') ? document.getElementById('email').value.trim() : '';
+  var phone = document.getElementById('phone') ? document.getElementById('phone').value.trim() : '';
+  var street = document.getElementById('address') ? document.getElementById('address').value.trim() : '';
+  var city = document.getElementById('city') ? document.getElementById('city').value.trim() : '';
+  var postal = document.getElementById('postal') ? document.getElementById('postal').value.trim() : '';
+  var province = document.getElementById('province') ? document.getElementById('province').value.trim() : '';
+
+  if (!fname || !lname || !email || !phone || !street || !city || !postal || !province) {
+    alert('Please fill out all mandatory shipping details before placing your order.');
+    return;
+  }
+
+  var address = street + ', ' + city + ', ' + province + ' ' + postal + ' (Name: ' + fname + ' ' + lname + ', Phone: ' + phone + ')';
 
   var total = 0;
   cart.forEach(function (item) { total += item.price * item.qty; });

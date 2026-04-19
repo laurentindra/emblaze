@@ -151,50 +151,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label">First Name</label>
-                <input class="form-input" type="text" placeholder="Nadira" />
+                <input class="form-input" type="text" id="first_name" placeholder="Nadira" />
               </div>
               <div class="form-group">
                 <label class="form-label">Last Name</label>
-                <input class="form-input" type="text" placeholder="Aurellia" />
+                <input class="form-input" type="text" id="last_name" placeholder="Aurellia" />
               </div>
             </div>
 
             <div class="form-row full">
               <div class="form-group">
                 <label class="form-label">Email Address</label>
-                <input class="form-input" type="email" placeholder="your@email.com" />
+                <input class="form-input" type="email" id="email" placeholder="your@email.com" />
               </div>
             </div>
 
             <div class="form-row full">
               <div class="form-group">
                 <label class="form-label">Phone Number</label>
-                <input class="form-input" type="tel" placeholder="+62 812 0000 0000" />
+                <input class="form-input" type="tel" id="phone" placeholder="+62 812 0000 0000" />
               </div>
             </div>
 
             <div class="form-row full">
               <div class="form-group">
                 <label class="form-label">Street Address</label>
-                <input class="form-input" type="text" placeholder="Jl. Merdeka No. 12" />
+                <input class="form-input" type="text" id="address" placeholder="Jl. Merdeka No. 12" />
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label">City</label>
-                <input class="form-input" type="text" placeholder="Jakarta" />
+                <input class="form-input" type="text" id="city" placeholder="Jakarta" />
               </div>
               <div class="form-group">
                 <label class="form-label">Postal Code</label>
-                <input class="form-input" type="text" placeholder="12345" />
+                <input class="form-input" type="text" id="postal" placeholder="12345" />
               </div>
             </div>
 
             <div class="form-row full">
               <div class="form-group">
                 <label class="form-label">Province</label>
-                <select class="form-select">
+                <select class="form-select" id="province">
                   <option value="">Select province</option>
                   <option>DKI Jakarta</option>
                   <option>Jawa Barat</option>
