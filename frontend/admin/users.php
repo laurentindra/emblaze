@@ -77,7 +77,7 @@ $totalUsers = count($users);
     </form>
   </div>
 
-  <!-- Users Table -->
+  
   <div class="table-card glass-admin">
     <div class="table-wrap">
       <table class="admin-table">
@@ -98,7 +98,7 @@ $totalUsers = count($users);
             <tr><td colspan="8" class="empty-admin">No users found.</td></tr>
           <?php else: ?>
           <?php foreach ($users as $i => $u):
-            // Count orders for this user
+          
             $orderCount = $pdo->prepare("SELECT COUNT(*) FROM orders WHERE user_id = ?");
             $orderCount->execute([$u['id']]);
             $oCount = $orderCount->fetchColumn();

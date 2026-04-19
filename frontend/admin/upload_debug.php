@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
 <html>
+
 <head><title>Upload Debug</title></head>
 <body style="font-family:monospace; padding:20px;">
 
@@ -7,7 +9,7 @@
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     echo "<h3>POST Data:</h3><pre>" . print_r($_POST, true) . "</pre>";
     echo "<h3>FILES Data:</h3><pre>" . print_r($_FILES, true) . "</pre>";
-
+// debugging upload doang ini, jangan diapa2in ya
     $uploadDir = __DIR__ . '/../../uploads/products/';
     echo "<h3>Upload Dir:</h3><p>" . realpath($uploadDir) . " (raw: $uploadDir)</p>";
     echo "<p>Dir exists: " . (is_dir($uploadDir) ? 'YES' : 'NO') . "</p>";

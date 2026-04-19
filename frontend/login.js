@@ -79,7 +79,7 @@ document.getElementById('authForm').addEventListener('submit', function(e) {
     form.append('username', username);
 
     if (!isLogin) {
-        // --- REGISTER ---
+        //register cihuy
         const confirm = document.getElementById('confirmPassword').value;
         const fullName = document.getElementById('fullName').value.trim();
 
@@ -106,7 +106,7 @@ document.getElementById('authForm').addEventListener('submit', function(e) {
             .catch(() => showMessage('Server error. Try again.', 'error'));
 
     } else {
-        // --- LOGIN ---
+        //login cihuy
         form.append('action', 'login');
 
         fetch('login.php', { method: 'POST', body: form })

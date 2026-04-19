@@ -33,8 +33,8 @@ function handleImageUpload(string $fieldName, string $existing = ''): string {
         throw new Exception('Image must be smaller than 2MB.');
     }
 
-    // Save to uploads/products/ at the root of the site
-    $uploadDir = __DIR__ . '/../../uploads/products/';
+    // Save to uploads/products/ inside the frontend directory
+    $uploadDir = __DIR__ . '/../uploads/products/';
     if (!is_dir($uploadDir)) {
         mkdir($uploadDir, 0755, true);
     }

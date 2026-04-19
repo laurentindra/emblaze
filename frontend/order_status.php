@@ -31,10 +31,9 @@ $methodLabel = $methodLabels[$method] ?? ucfirst($method);
     .status-heading em { font-style: italic; color: #9f1d2e; }
     .order-id-chip { display: inline-block; background: rgba(159,29,46,0.07); border: 1px solid rgba(159,29,46,0.18); color: #7c1f2d; font-size: 13px; letter-spacing: 0.18em; padding: 8px 24px; border-radius: 999px; margin-top: 8px; }
 
-    /* Status Card */
     .status-card { max-width: 580px; margin: 0 auto 32px; border-radius: 28px; padding: 40px; background: rgba(255,255,255,0.88); backdrop-filter: blur(20px); border: 1px solid rgba(231,200,191,0.4); box-shadow: 0 8px 32px rgba(204,177,170,0.14); text-align: center; }
 
-    /* Status icon */
+
     .status-icon-wrap { width: 88px; height: 88px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 24px; }
     .status-icon-wrap.pending  { background: linear-gradient(135deg, #fef3c7, #fde68a); animation: pulse 2s ease-in-out infinite; }
     .status-icon-wrap.processing,
@@ -59,7 +58,7 @@ $methodLabel = $methodLabels[$method] ?? ucfirst($method);
     .badge-delivered  { background: rgba(159,29,46,0.08); color: #7c1f2d; border: 1px solid rgba(159,29,46,0.2); }
     .badge-cancelled  { background: rgba(239,68,68,0.1); color: #b91c1c; border: 1px solid rgba(239,68,68,0.25); }
 
-    /* Progress Steps */
+ 
     .progress-track { display: flex; align-items: flex-start; justify-content: center; gap: 0; margin: 32px 0; }
     .prog-step { display: flex; flex-direction: column; align-items: center; gap: 8px; flex: 1; max-width: 90px; }
     .prog-dot { width: 34px; height: 34px; border-radius: 50%; border: 2px solid #e7c8bf; background: white; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; color: #c4a99a; transition: all 0.4s; position: relative; z-index: 1; }
@@ -70,13 +69,13 @@ $methodLabel = $methodLabels[$method] ?? ucfirst($method);
     .prog-line { flex: 1; height: 2px; background: #e7c8bf; margin-top: 17px; transition: background 0.4s; max-width: 60px; }
     .prog-line.done { background: linear-gradient(to right, #c4455b, #9f1d2e); }
 
-    /* Order Info */
+  
     .order-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; text-align: left; margin-top: 24px; }
     .info-item { background: rgba(252,244,242,0.8); border-radius: 14px; padding: 14px 16px; border: 1px solid rgba(231,200,191,0.3); }
     .info-label { font-size: 10px; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 5px; }
     .info-val { font-size: 14px; font-weight: 500; color: var(--text-dark); }
 
-    /* Polling indicator */
+
     .polling-note { font-size: 12px; color: var(--text-muted); margin-top: 16px; display: flex; align-items: center; justify-content: center; gap: 8px; }
     .dot-pulse { width: 7px; height: 7px; border-radius: 50%; background: #9f1d2e; animation: dotpulse 1.3s ease-in-out infinite; }
     @keyframes dotpulse { 0%, 100% { opacity: 0.2; } 50% { opacity: 1; } }
@@ -318,7 +317,6 @@ $methodLabel = $methodLabels[$method] ?? ucfirst($method);
         document.getElementById('infoTotal').textContent   = data.total_price   || '—';
       }
 
-      // Polling indicator
       document.getElementById('pollingNote').style.display = cfg.polling ? 'flex' : 'none';
     }
 
@@ -333,7 +331,7 @@ $methodLabel = $methodLabels[$method] ?? ucfirst($method);
           }
         })
         .catch(function() {
-          // retry on error
+        
           pollTimer = setTimeout(checkStatus, 15000);
         });
     }

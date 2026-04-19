@@ -1,5 +1,5 @@
 <?php
-// API endpoint: check order status by order number
+
 header('Content-Type: application/json');
 session_start();
 
@@ -11,7 +11,7 @@ if (!isset($_SESSION['user_id'])) {
 include 'koneksi.php';
 
 $order_number = trim($_GET['order_id'] ?? '');
-// Order number format: EMB-00042 → extract numeric part
+
 $order_id = (int) preg_replace('/[^0-9]/', '', $order_number);
 
 if (!$order_id) {

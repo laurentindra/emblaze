@@ -2,19 +2,18 @@
 node_modules/
 npm-debug.log
 
-# Environment / secrets
+
 .env
 database/.env
 
-# Ignore local XAMPP deploy artifacts
+
 deploy.ps1
 
-# Keep qris.jpg in repo (needed for Railway)
-# uploads/qris.jpg
+
 uploads/qris.png
 uploads/products/
 
-# PHP/config
+
 *.log
 
 # OS

@@ -98,7 +98,7 @@ $categories = ['Women', 'Men', 'Jewelry', 'Skirt', 'Footwear', 'Outerwear', 'Top
             <td>
               <div class="product-thumb-wrap">
                 <?php if ($p['image_url']): ?>
-                  <img src="../../<?= htmlspecialchars($p['image_url']) ?>" alt="<?= htmlspecialchars($p['name']) ?>"
+                  <img src="../<?= htmlspecialchars($p['image_url']) ?>" alt="<?= htmlspecialchars($p['name']) ?>"
                        class="product-thumb" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'">
                 <?php endif; ?>
                 <div class="product-thumb-placeholder" style="<?= $p['image_url'] ? 'display:none' : '' ?>">
@@ -272,7 +272,7 @@ function openEdit(id, name, desc, price, stock, cat, img) {
   const preview = document.getElementById('editImagePreview');
   const imgEl   = document.getElementById('editCurrentImg');
   if (img) {
-    imgEl.src = '../../' + img;
+    imgEl.src = '../' + img;
     preview.style.display = 'flex';
   } else {
     preview.style.display = 'none';

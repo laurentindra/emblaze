@@ -1,7 +1,7 @@
 const SHIPPING = 25000;
 let discount = 0;
 
-// ================= CART STORAGE =================
+
 function getCart() {
   try { return JSON.parse(localStorage.getItem('emblaze_cart')) || []; }
   catch { return []; }
@@ -13,12 +13,12 @@ function saveCart(cart) {
 
 let cart = getCart();
 
-// ================= FORMAT =================
+
 function fmt(n) {
   return 'Rp' + n.toLocaleString('id-ID').replace(/,/g, '.');
 }
 
-// ================= RENDER CART =================
+
 function renderCart() {
   const list = document.getElementById('cartList');
   if (!list) return;
@@ -47,7 +47,7 @@ function renderCart() {
 
     list.appendChild(row);
 
-    // minus
+    
     document.getElementById(`minus-${idx}`).onclick = () => {
       if (cart[idx].qty > 1) {
         cart[idx].qty--;
@@ -74,7 +74,7 @@ function renderCart() {
   updateTotals();
 }
 
-// ================= TOTAL =================
+
 function updateTotals() {
   let subtotal = 0;
   let count = 0;

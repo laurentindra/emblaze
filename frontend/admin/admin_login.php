@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
-// Redirect jika sudah login
+
 if (!empty($_SESSION['is_admin'])) {
     header('Location: dashboard.php');
     exit;
